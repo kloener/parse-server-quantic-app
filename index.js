@@ -12,14 +12,29 @@ if (!databaseUri) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://localhost:13212/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
+  masterKey: process.env.MASTER_KEY || 'myMasterKey', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://localhost:1337/parse',  // Don't forget to change to https if needed
-  fileKey: process.env.FILE_KEY || '',
-  clientKey: process.env.REST_KEY || '',
-  javascriptKey: process.env.JAVASCRIPT_KEY || '',
+  fileKey: process.env.FILE_KEY || 'myFileKey',
+  clientKey: process.env.REST_KEY || 'myRestKey',
+  javascriptKey: process.env.JAVASCRIPT_KEY || 'myJsKey',
+  push: {
+    ios: [
+    {
+      bundleId: process.env.APP_BUNDLE_ID, // The bundle identifier associate with your app
+      cert: __dirname + process.env.IOS_PUSH_CERT_PATH, // If not using the .p12 format, the path to the certificate PEM to load from disk
+      key: __dirname + process.env.IOS_PUSH_PRIVATE_KEY_PATH, // If not using the .p12 format, the path to the private key PEM to load from disk
+      production: true // Specifies which environment to connect to: Production (if true) or Sandbox
+    },{
+      bundleId: process.env.APP_BUNDLE_ID, // The bundle identifier associate with your app
+      cert: __dirname + process.env.IOS_PUSH_CERT_DEV_PATH, // If not using the .p12 format, the path to the certificate PEM to load from disk
+      key: __dirname + process.env.IOS_PUSH_PRIVATE_KEY_PATH, // If not using the .p12 format, the path to the private key PEM to load from disk
+      production: false // Specifies which environment to connect to: Production (if true) or Sandbox
+    },
+    ]
+  },
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
